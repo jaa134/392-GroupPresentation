@@ -50,13 +50,12 @@ class TriviaData {
                 onDataError()
                 return
             }
-            guard let response = try? JSONDecoder().decode(ServerResponse.self, from: data) else {
+            guard let response = try? XMLDecoder().decode(ServerResponse.self, from: data) else {
                 print("Error: Couldn't decode data into questions set...")
                 onDataError()
                 return
             }
             self.response = response
-            onSuccess()
         }
         
         task.resume()
