@@ -1,2 +1,2 @@
 to update:
-git subtree push --prefix <folder> heroku master
+git subtree push --prefix Website heroku master
