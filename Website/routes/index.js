@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var jsonxml = require('jsontoxml');
-var xml = require('xml')
+var js2xmlparser = require('js2xmlparser');
 var https = require('https');
 
 router.get('/', function(req, resp) {
@@ -36,8 +35,8 @@ router.get('/api/triviaXML', function(req, resp) {
       data += chunk;
     });
     trivia_resp.on('end', () => {
-      resp.set('Content-Type', 'text/xml');
-      resp.status(200).send(jsonxml(new Document(JSON.parse(data))));
+      //resp.set('Content-Type', 'text/xml');
+      resp.status(200).send(js2xmlparser.parse("serverResponse", JSON.parse(data)));
     });
   }).on("error", (err) => {
     console.log("Error: " + err.message);
