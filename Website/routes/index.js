@@ -1,39 +1,48 @@
 var express = require('express');
 var router = express.Router();
 var jsonxml = require('jsontoxml');
+var xml = require('xml')
 var https = require('https');
 
-router.get('/', function(req, res) {
-  res.render('index', { title: 'CWRUded' });
+router.get('/', function(req, resp) {
+  resp.render('index', { title: 'CWRUded' });
 });
 
-router.get('/api/triviaJSON', function(req, res) {
-  https.get('https://opentdb.com/api.php?amount=20&category=18', (resp) => {
+router.get('/api/triviaJSON', function(req, resp) {
+  https.get('https://opentdb.com/api.php?amount=20&category=18', (trivia_resp) => {
     let data = '';
-    resp.on('data', (chunk) => {
+    trivia_resp.on('data', (chunk) => {
       data += chunk;
     });
-    resp.on('end', () => {
-      res.status(200).json(JSON.parse(data));
+    trivia_resp.on('end', () => {
+      //resp.status(200).send(data);
+      resp.status(200).json(JSON.parse(data));
     });
   }).on("error", (err) => {
     console.log("Error: " + err.message);
-    res.status(200).json({});
+    resp.status(503).json({});
   });
 });
 
-router.get('/api/triviaXML', function(req, res) {
-  https.get('https://opentdb.com/api.php?amount=20&category=18', (resp) => {
+class Document {
+  constructor(data) {
+    this.serverResponse = data
+  }
+}
+
+router.get('/api/triviaXML', function(req, resp) {
+  https.get('https://opentdb.com/api.php?amount=20&category=18', (trivia_resp) => {
     let data = '';
-    resp.on('data', (chunk) => {
+    trivia_resp.on('data', (chunk) => {
       data += chunk;
     });
-    resp.on('end', () => {
-      res.status(200).json(jsonxml(JSON.parse(data)));
+    trivia_resp.on('end', () => {
+      resp.set('Content-Type', 'text/xml');
+      resp.status(200).send(jsonxml(new Document(data)));
     });
   }).on("error", (err) => {
     console.log("Error: " + err.message);
-    res.status(200).json({});
+    resp.status(503).json({});
   });
 });
 
