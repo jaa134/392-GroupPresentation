@@ -30,7 +30,7 @@ class Document {
 }
 
 router.get('/api/triviaXML', function(req, resp) {
-  https.get('https://opentdb.com/api.php?amount=20&category=18', (trivia_resp) => {
+  https.get('https://opentdb.com/api.php?amount=20&category=18&type=multiple', (trivia_resp) => {
     let data = '';
     trivia_resp.on('data', (chunk) => {
       data += chunk;
