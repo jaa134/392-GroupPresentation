@@ -15,7 +15,6 @@ router.get('/api/triviaJSON', function(req, resp) {
       data += chunk;
     });
     trivia_resp.on('end', () => {
-      //resp.status(200).send(data);
       resp.status(200).json(JSON.parse(data));
     });
   }).on("error", (err) => {
@@ -38,7 +37,7 @@ router.get('/api/triviaXML', function(req, resp) {
     });
     trivia_resp.on('end', () => {
       resp.set('Content-Type', 'text/xml');
-      resp.status(200).send(jsonxml(new Document(data)));
+      resp.status(200).send(jsonxml(new Document(JSON.parse(data))));
     });
   }).on("error", (err) => {
     console.log("Error: " + err.message);
