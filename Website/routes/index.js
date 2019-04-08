@@ -18,12 +18,23 @@ router.get('/api/triviaJSON', function(req, res) {
     });
   }).on("error", (err) => {
     console.log("Error: " + err.message);
-    res.status(200).json([]);
+    res.status(200).json({});
   });
 });
 
 router.get('/api/triviaXML', function(req, res) {
-  res.status(200).json([]);
+  https.get('https://opentdb.com/api.php?amount=20&category=18', (resp) => {
+    let data = '';
+    resp.on('data', (chunk) => {
+      data += chunk;
+    });
+    resp.on('end', () => {
+      res.status(200).json(jsonxml(JSON.parse(data)));
+    });
+  }).on("error", (err) => {
+    console.log("Error: " + err.message);
+    res.status(200).json({});
+  });
 });
 
 module.exports = router;
