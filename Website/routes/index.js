@@ -5,7 +5,11 @@ router.get('/', function(req, res) {
   res.render('index', { title: 'CWRUded' });
 });
 
-router.get('/api/locations', function(req, res) {
+router.get('/api/triviaJSON', function(req, res) {
+  res.status(200).json([]);
+});
+
+router.get('/api/triviaXML', function(req, res) {
   res.status(200).json([]);
 });
 
