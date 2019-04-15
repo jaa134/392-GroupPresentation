@@ -36,7 +36,7 @@ class TriviaData {
     }
     
     func update(onNetworkError: @escaping ()->(), onDataError: @escaping ()->(), onSuccess: @escaping ()->()) {
-        let url = URL(string: "https://opentdb.com/api.php?amount=10&category=18")!
+        let url = URL(string: "https://trivia392.herokuapp.com/api/triviaXML")!
         
         let session = URLSession(configuration: urlSessionConfig)
         let task = session.dataTask(with: url) {(data, response, error) in
@@ -50,14 +50,19 @@ class TriviaData {
                 onDataError()
                 return
             }
+            //has an error, does not parse arrays with single items... :(
             guard let response = try? XMLDecoder().decode(ServerResponse.self, from: data) else {
                 print("Error: Couldn't decode data into questions set...")
                 onDataError()
                 return
             }
             self.response = response
+            onSuccess()
         }
         
         task.resume()
     }
 }
+
+
+

@@ -36,7 +36,7 @@ class TriviaData {
     }
     
     func update(onNetworkError: @escaping ()->(), onDataError: @escaping ()->(), onSuccess: @escaping ()->()) {
-        let url = URL(string: "https://opentdb.com/api.php?amount=10&category=18")!
+        let url = URL(string: "https://trivia392.herokuapp.com/api/triviaJSON")!
         
         let session = URLSession(configuration: urlSessionConfig)
         let task = session.dataTask(with: url) {(data, response, error) in
